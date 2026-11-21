@@ -29,9 +29,43 @@ h1{
 
 .subtitle{color:#e8b8d4;font-size:14px}
 
+/* ÖZEL GİRİŞ EKRANI */
+
+#passwordScreen{
+ max-width:600px;
+ margin:55px auto;
+ padding:30px 20px;
+ background:linear-gradient(145deg,#35172f,#1c1020);
+ border:1px solid #a43e78;
+ border-radius:25px;
+ box-shadow:0 0 35px #e94c9c30;
+}
+
+.password-input{
+ display:block;
+ width:90%;
+ max-width:300px;
+ padding:16px;
+ margin:20px auto;
+ border:1px solid #a43e78;
+ border-radius:12px;
+ background:#fff0f8;
+ color:#42132f;
+ font-size:17px;
+ text-align:center;
+ outline:none;
+}
+
+.password-error{
+ color:#ff8bc9;
+ font-weight:bold;
+ min-height:22px;
+}
+
 /* AÇILIŞ EKRANI */
 
 #home{
+ display:none;
  max-width:600px;
  margin:55px auto;
  padding:30px 20px;
@@ -266,9 +300,47 @@ button{
 
 <body>
 
+<!-- ÖZEL GİRİŞ -->
+
+<div id="passwordScreen">
+
+ <div class="heart">🔒</div>
+
+ <div class="home-title">
+  Özel Teste Giriş
+ </div>
+
+ <p class="home-text">
+  Özel teste erişebilmek için Doruk hakkında
+  küçük bir soruyu doğru cevaplamalısın.
+ </p>
+
+ <h3>Doruk'un fetişi nedir?</h3>
+
+ <input
+  id="passwordAnswer"
+  class="password-input"
+  type="text"
+  placeholder="Cevabını yaz..."
+  autocomplete="off"
+ >
+
+ <button
+  type="button"
+  class="start-button"
+  onclick="checkPassword()"
+ >
+  🔓 CEVABI GÖNDER
+ </button>
+
+ <p id="passwordError" class="password-error"></p>
+
+</div>
+
 <!-- AÇILIŞ -->
 
 <div id="home">
+
  <div class="heart">💗</div>
 
  <div class="home-title">
@@ -338,6 +410,39 @@ button{
 </div>
 
 <script>
+
+/* ŞİFRE KONTROLÜ */
+
+function checkPassword(){
+
+ const answer = document
+  .getElementById("passwordAnswer")
+  .value
+  .trim()
+  .toLocaleLowerCase("tr-TR");
+
+ if(answer === "ayak"){
+
+  document.getElementById("passwordScreen").style.display = "none";
+  document.getElementById("home").style.display = "block";
+
+ }else{
+
+  document.getElementById("passwordError").innerText =
+   "❌ Yanlış cevap! Tekrar dene.";
+
+ }
+}
+
+/* ENTER TUŞUYLA CEVAPLAMA */
+
+document.getElementById("passwordAnswer").addEventListener("keydown",function(event){
+
+ if(event.key === "Enter"){
+  checkPassword();
+ }
+
+});
 
 const people = [
  {name:"Dušan Vlahović",image:"dusan.JPG"},
