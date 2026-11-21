@@ -180,6 +180,59 @@ button{
  margin-top:35px;
 }
 
+/* SÜRPRİZ POP-UP */
+
+#surprisePopup{
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ background:rgba(0,0,0,.82);
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+}
+
+.popup-box{
+ position:relative;
+ width:100%;
+ max-width:340px;
+ padding:28px 20px;
+ background:linear-gradient(145deg,#fff0f8,#ffd1e8);
+ color:#42132f;
+ border:3px solid #ff8bc9;
+ border-radius:18px;
+ box-shadow:0 0 35px #ff55b5;
+ animation:popupEnter .35s ease;
+}
+
+.popup-close{
+ position:absolute;
+ top:7px;
+ right:12px;
+ color:#54203d;
+ font-size:30px;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+.popup-title{
+ font-size:22px;
+ font-weight:bold;
+ color:#d52d87;
+ margin:10px 0;
+}
+
+.popup-message{
+ font-size:17px;
+ line-height:1.6;
+}
+
+@keyframes popupEnter{
+ from{opacity:0;transform:scale(.7)}
+ to{opacity:1;transform:scale(1)}
+}
+
 @keyframes heartbeat{
  0%,100%{transform:scale(1)}
  50%{transform:scale(1.13)}
@@ -271,6 +324,19 @@ button{
 
 <div class="footer">Made by Doruk for Sapık Öyküş</div>
 
+<!-- POP-UP -->
+
+<div id="surprisePopup">
+ <div class="popup-box">
+  <span class="popup-close" onclick="closePopup()">×</span>
+  <div style="font-size:45px">🚨</div>
+  <div class="popup-title">ÇİŞİM GELDİ!</div>
+  <div class="popup-message">
+   Doruk 2894 km uzakta ve üzerine işemek istiyor! 🦶🏻
+  </div>
+ </div>
+</div>
+
 <script>
 
 const people = [
@@ -289,10 +355,39 @@ let current = [];
 let selectedCount = 0;
 let locked = false;
 
+/* POP-UP KONTROLÜ */
+
+let popupShown = false;
+let popupTimer = null;
+
+function schedulePopup(){
+
+ if(popupShown) return;
+
+ popupTimer = setTimeout(function(){
+
+  if(popupShown) return;
+
+  popupShown = true;
+
+  document.getElementById("surprisePopup").style.display = "flex";
+
+ }, 5000 + Math.random() * 12000);
+}
+
+function closePopup(){
+
+ document.getElementById("surprisePopup").style.display = "none";
+}
+
 function startGame(){
  document.getElementById("home").style.display = "none";
  document.getElementById("game").style.display = "block";
  restart();
+
+ if(!popupShown && !popupTimer){
+  schedulePopup();
+ }
 }
 
 function restart(){
