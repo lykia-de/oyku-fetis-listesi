@@ -29,7 +29,7 @@ h1{
 
 .subtitle{color:#e8b8d4;font-size:14px}
 
-/* AÇILIŞ */
+/* AÇILIŞ EKRANI */
 
 #home{
  max-width:600px;
@@ -58,6 +58,7 @@ h1{
 }
 
 .start-button{
+ display:block;
  width:90%;
  max-width:300px;
  padding:17px;
@@ -71,7 +72,7 @@ h1{
  cursor:pointer;
 }
 
-/* OYUN */
+/* OYUN EKRANI */
 
 #game{display:none}
 
@@ -117,8 +118,6 @@ h1{
  transition:transform .3s,opacity .3s,box-shadow .3s;
  animation:cardEnter .45s ease;
 }
-
-.player:active{transform:scale(.97)}
 
 .player img{
  width:100%;
@@ -214,6 +213,8 @@ button{
 
 <body>
 
+<!-- AÇILIŞ -->
+
 <div id="home">
  <div class="heart">💗</div>
 
@@ -228,12 +229,14 @@ button{
   Bakalım sonunda kim kazanacak?
  </p>
 
- <button class="start-button" onclick="startGame()">
+ <button type="button" class="start-button" onclick="startGame()">
   💗 OYUNA BAŞLA 💗
  </button>
 
  <p class="subtitle">8 aday • 1 büyük şampiyon</p>
 </div>
+
+<!-- OYUN -->
 
 <div id="game">
 
@@ -260,7 +263,9 @@ button{
 
  <div id="result"></div>
 
- <button onclick="restart()">↻ Yeniden Başlat</button>
+ <button type="button" onclick="restart()">
+  ↻ Yeniden Başlat
+ </button>
 
 </div>
 
@@ -279,109 +284,118 @@ const people = [
  {name:"Lukas Bergvall",image:"bergvall.JPG"}
 ];
 
-let remaining=[];
-let current=[];
-let selectedCount=0;
-let locked=false;
+let remaining = [];
+let current = [];
+let selectedCount = 0;
+let locked = false;
 
 function startGame(){
- document.getElementById("home").style.display="none";
- document.getElementById("game").style.display="block";
+ document.getElementById("home").style.display = "none";
+ document.getElementById("game").style.display = "block";
  restart();
 }
 
 function restart(){
 
- locked=false;
- remaining=[...people];
- current=[];
- selectedCount=0;
+ locked = false;
+ remaining = [...people];
+ current = [];
+ selectedCount = 0;
 
- document.getElementById("result").innerHTML="";
- document.getElementById("vs").style.display="block";
- document.getElementById("bar").style.width="0%";
+ document.getElementById("result").innerHTML = "";
+ document.getElementById("vs").style.display = "block";
+ document.getElementById("bar").style.width = "0%";
 
  nextRound();
 }
 
 function nextRound(){
 
- if(remaining.length===1){
+ if(remaining.length === 1){
 
-  document.getElementById("players").innerHTML="";
-  document.getElementById("vs").style.display="none";
+  document.getElementById("players").innerHTML = "";
+  document.getElementById("vs").style.display = "none";
 
-  document.getElementById("counter").innerText=
-  "🏆 BÜYÜK ŞAMPİYON 🏆";
+  document.getElementById("counter").innerText =
+   "🏆 BÜYÜK ŞAMPİYON 🏆";
 
-  document.getElementById("bar").style.width="100%";
+  document.getElementById("bar").style.width = "100%";
 
-  document.getElementById("result").innerHTML=
-  '<div class="champion">👑 '+remaining[0].name+
-  ' 👑</div><br>💗 Öykü\\'nün favorisi belli oldu!';
+  document.getElementById("result").innerHTML =
+   "<div class='champion'>👑 " +
+   remaining[0].name +
+   " 👑</div><br>💗 Öykü'nün favorisi belli oldu!";
 
   return;
  }
 
- current=remaining.splice(0,2);
+ current = remaining.splice(0,2);
 
- document.getElementById("counter").innerText=
- "SEÇİM "+(selectedCount+1)+" • KİMİ SEÇİYORSUN?";
+ document.getElementById("counter").innerText =
+  "SEÇİM " + (selectedCount + 1) +
+  " • KİMİ SEÇİYORSUN?";
 
- document.getElementById("bar").style.width=
- (selectedCount/7*100)+"%";
+ document.getElementById("bar").style.width =
+  (selectedCount / 7 * 100) + "%";
 
  showPlayers();
 }
 
 function showPlayers(){
 
- const area=document.getElementById("players");
- area.innerHTML="";
+ const area = document.getElementById("players");
+ area.innerHTML = "";
 
  current.forEach((person,index)=>{
 
-  const card=document.createElement("div");
-  card.className="player";
+  const card = document.createElement("div");
+  card.className = "player";
 
-  const img=document.createElement("img");
-  img.src=person.image;
-  img.alt=person.name;
+  const img = document.createElement("img");
+  img.src = person.image;
+  img.alt = person.name;
 
-  img.onerror=function(){
-   this.onerror=null;
-   this.src="https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
+  img.onerror = function(){
+   this.onerror = null;
+   this.src =
+    "https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
   };
 
-  const name=document.createElement("h2");
-  name.innerText=person.name;
+  const name = document.createElement("h2");
+  name.innerText = person.name;
 
   card.appendChild(img);
   card.appendChild(name);
 
-  card.onclick=()=>choose(index);
+  card.onclick = function(){
+   choose(index);
+  };
 
   area.appendChild(card);
+
  });
 }
 
 function choose(index){
 
- if(locked)return;
- locked=true;
+ if(locked) return;
 
- const cards=document.querySelectorAll(".player");
- const winner=current[index];
+ locked = true;
+
+ const cards = document.querySelectorAll(".player");
+ const winner = current[index];
 
  cards[index].classList.add("winner");
  cards[1-index].classList.add("loser");
 
  selectedCount++;
 
- setTimeout(()=>{
+ setTimeout(function(){
+
   remaining.push(winner);
-  locked=false;
+  locked = false;
   nextRound();
+
  },650);
 }
 
