@@ -134,6 +134,65 @@ h1{
  transition:width .5s;
 }
 
+/* ATEŞ ÖLÇER */
+
+.heat-container{
+ width:90%;
+ max-width:400px;
+ margin:0 auto 25px;
+ padding:15px;
+ background:#281326;
+ border:1px solid #8c3c68;
+ border-radius:16px;
+}
+
+.heat-heading{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:10px;
+ color:#ffd1e8;
+ font-size:14px;
+ font-weight:bold;
+}
+
+#heatPercent{
+ color:#ffca55;
+ font-size:20px;
+}
+
+.heat-track{
+ width:100%;
+ height:15px;
+ background:#49283e;
+ border-radius:20px;
+ overflow:hidden;
+}
+
+#heatBar{
+ width:0%;
+ height:100%;
+ border-radius:20px;
+ background:linear-gradient(90deg,#ffe45c,#ff922e,#ff3030);
+ transition:width .6s ease,filter .6s ease;
+ box-shadow:0 0 12px #ff922e;
+}
+
+#heatMessage{
+ margin-top:9px;
+ color:#ffc0dc;
+ font-size:12px;
+}
+
+#heatBar.hot{
+ animation:heatPulse .7s infinite alternate;
+}
+
+@keyframes heatPulse{
+ from{filter:brightness(1);box-shadow:0 0 8px #ff922e}
+ to{filter:brightness(1.5);box-shadow:0 0 22px #ff3030}
+}
+
 .players{
  display:flex;
  gap:12px;
@@ -382,6 +441,18 @@ button{
   <div id="bar"></div>
  </div>
 
+ <!-- ATEŞ ÖLÇER -->
+ <div class="heat-container">
+  <div class="heat-heading">
+   <span>🔥 ATEŞ ÖLÇER</span>
+   <span id="heatPercent">%0</span>
+  </div>
+  <div class="heat-track">
+   <div id="heatBar"></div>
+  </div>
+  <div id="heatMessage">🔥 Daha yeni başlıyoruz...</div>
+ </div>
+
  <div class="players" id="players"></div>
 
  <div class="vs" id="vs">— VS —</div>
@@ -460,6 +531,30 @@ let current = [];
 let selectedCount = 0;
 let locked = false;
 
+/* ATEŞ ÖLÇER KONTROLÜ */
+
+function updateHeat(value){
+
+ const heatBar = document.getElementById("heatBar");
+ const heatPercent = document.getElementById("heatPercent");
+ const heatMessage = document.getElementById("heatMessage");
+
+ heatBar.style.width = value + "%";
+ heatPercent.innerText = "%" + value;
+
+ heatBar.classList.toggle("hot",value >= 70);
+
+ if(value < 30){
+  heatMessage.innerText = "🔥 Daha yeni başlıyoruz...";
+ }else if(value < 60){
+  heatMessage.innerText = "🌡️ Ortam ısınmaya başladı!";
+ }else if(value < 100){
+  heatMessage.innerText = "🔥🔥 Alevler yükseliyor!";
+ }else{
+  heatMessage.innerText = "🔥🔥🔥 ORTALIK YANIYOR!";
+ }
+}
+
 /* POP-UP KONTROLÜ */
 
 let popupShown = false;
@@ -502,6 +597,8 @@ function restart(){
  current = [];
  selectedCount = 0;
 
+ updateHeat(0);
+
  document.getElementById("result").innerHTML = "";
  document.getElementById("vs").style.display = "block";
  document.getElementById("bar").style.width = "0%";
@@ -520,6 +617,8 @@ function nextRound(){
    "🏆 BÜYÜK ŞAMPİYON 🏆";
 
   document.getElementById("bar").style.width = "100%";
+
+  updateHeat(100);
 
   document.getElementById("result").innerHTML =
    "<div class='champion'>👑 " +
@@ -589,6 +688,8 @@ function choose(index){
  cards[1-index].classList.add("loser");
 
  selectedCount++;
+
+ updateHeat(Math.min(100,Math.round(selectedCount / 7 * 100)));
 
  setTimeout(function(){
 
