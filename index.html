@@ -4,146 +4,268 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#170b17">
 <title>Öykü'nün Eriyip Bittiği Fetiş Listesi 💗</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
- margin:0;min-height:100vh;
+ margin:0;
+ min-height:100vh;
+ padding:25px 15px;
  background:linear-gradient(145deg,#100711,#351027,#160b19);
- color:white;font-family:Arial,sans-serif;
- text-align:center;padding:25px 15px;
+ color:white;
+ font-family:Arial,sans-serif;
+ text-align:center;
 }
-h1{color:#ff8bc9;font-size:27px;line-height:1.3}
-.subtitle{color:#e8b8d4}
-.counter{margin:22px;color:#ff9dcc;font-weight:bold}
-.players{
- display:flex;gap:14px;max-width:750px;margin:auto;
+
+h1{
+ color:#ff8bc9;
+ font-size:27px;
+ line-height:1.35;
+ margin-top:25px;
 }
-.player{
- flex:1;min-width:0;background:#35172f;
- border:2px solid #a43e78;border-radius:18px;
- padding:10px;cursor:pointer;transition:.2s;
+
+.subtitle{color:#e8b8d4;font-size:14px}
+
+.counter{
+ margin:25px 0 12px;
+ color:#ff9dcc;
+ font-weight:bold;
+ font-size:17px;
 }
-.player:hover{transform:translateY(-5px);border-color:#ff8bc9}
-.player img{
- width:100%;height:260px;object-fit:cover;
- border-radius:12px;background:#211321;
-}
-.player h2{font-size:17px;overflow-wrap:anywhere}
-.vs{font-size:27px;color:#ff8bc9;margin:20px}
-button{
- background:#ed5ba7;color:white;border:0;
- border-radius:12px;padding:14px 25px;
- font-size:16px;font-weight:bold;margin:12px;cursor:pointer;
-}
-#result{font-size:25px;color:#ff9dcc;margin:25px}
+
 .progress{
- width:90%;max-width:400px;height:7px;
- background:#47243d;border-radius:20px;margin:15px auto;
+ width:90%;
+ max-width:400px;
+ height:7px;
+ background:#47243d;
+ border-radius:20px;
+ margin:15px auto 25px;
  overflow:hidden;
 }
-#bar{height:100%;width:0;background:#ff8bc9;transition:.3s}
+
+#bar{
+ height:100%;
+ width:0;
+ background:#ff8bc9;
+ transition:.3s;
+}
+
+.players{
+ display:flex;
+ gap:12px;
+ max-width:750px;
+ margin:auto;
+}
+
+.player{
+ flex:1;
+ min-width:0;
+ background:#35172f;
+ border:2px solid #a43e78;
+ border-radius:18px;
+ padding:9px;
+ cursor:pointer;
+ transition:.2s;
+}
+
+.player:active{transform:scale(.96)}
+
+.player img{
+ width:100%;
+ height:260px;
+ object-fit:cover;
+ border-radius:12px;
+ background:#211321;
+}
+
+.player h2{
+ font-size:16px;
+ overflow-wrap:anywhere;
+}
+
+.vs{
+ color:#ff8bc9;
+ font-size:28px;
+ font-weight:bold;
+ margin:20px;
+}
+
+button{
+ background:#ed5ba7;
+ color:white;
+ border:0;
+ border-radius:12px;
+ padding:14px 25px;
+ font-size:16px;
+ font-weight:bold;
+ margin:15px;
+ cursor:pointer;
+}
+
+#result{
+ color:#ff9dcc;
+ font-size:25px;
+ margin:25px 0;
+ line-height:1.6;
+}
+
+.footer{
+ color:#a98ba0;
+ font-size:12px;
+ margin-top:35px;
+}
+
 @media(max-width:450px){
  .player img{height:190px}
  h1{font-size:23px}
- .player{padding:7px}
+ .player{padding:6px}
+ .player h2{font-size:14px}
 }
 </style>
 </head>
+
 <body>
 
-<h1>💗 Öykü'nün Eriyip Bittiği<br>Fetiş Listesi 💗</h1>
-<p class="subtitle">En Çok Yükseldiğin İsmi Bul...👀</p>
+<h1>
+💗 Öykü'nün Eriyip Bittiği<br>
+Fetiş Listesi 💗
+</h1>
 
-<div class="counter" id="counter">Seçimini yap!</div>
-<div class="progress"><div id="bar"></div></div>
+<p class="subtitle">
+En Çok Yükseldiğin Kişiyi Seç... 👀
+</p>
+
+<div class="counter" id="counter">
+SEÇİMİNİ YAP!
+</div>
+
+<div class="progress">
+<div id="bar"></div>
+</div>
 
 <div class="players" id="players"></div>
+
 <div class="vs" id="vs">— VS —</div>
 
 <div id="result"></div>
-<button onclick="restart()">↻ Yeniden Başlat</button>
+
+<button onclick="restart()">
+↻ Yeniden Başlat
+</button>
+
+<div class="footer">
+Made with 💗 for Öykü
+</div>
 
 <script>
+
 const people = [
- {name:"Dušan Vlahović", image:"dusan.jpg"},
- {name:"Alex Nübel", image:"nubel.jpg"},
- {name:"Samuel Eto'o", image:"eto.jpg"},
- {name:"David Beckham", image:"beckham.jpg"},
- {name:"Patrick Jane", image:"patrick.jpg"},
- {name:"Dexter Morgan", image:"dexter.jpg"},
- {name:"Matheo Arntzen", image:"matheo.jpg"},
- {name:"Lukas Bergvall", image:"bergvall.jpg"}
+ {name:"Dušan Vlahović", image:"dusan.JPG"},
+ {name:"Alex Nübel", image:"nubel.JPG"},
+ {name:"Samuel Eto'o", image:"eto.JPG"},
+ {name:"David Beckham", image:"beckham.JPG"},
+ {name:"Patrick Jane", image:"patrick.JPG"},
+ {name:"Dexter Morgan", image:"dexter.JPG"},
+ {name:"Matheo Arntzen", image:"matheo.JPG"},
+ {name:"Lukas Bergvall", image:"bergvall.JPG"}
 ];
 
 let remaining=[];
 let current=[];
-let round=0;
 let selectedCount=0;
 
 function restart(){
+
  remaining=[...people];
  current=[];
- round=0;
  selectedCount=0;
+
  document.getElementById("result").innerHTML="";
  document.getElementById("vs").style.display="block";
  document.getElementById("bar").style.width="0%";
+
  nextRound();
 }
 
 function nextRound(){
+
  if(remaining.length===1){
+
   document.getElementById("players").innerHTML="";
   document.getElementById("vs").style.display="none";
-  document.getElementById("counter").innerText="🏆 BÜYÜK ŞAMPİYON";
+
+  document.getElementById("counter").innerText=
+  "🏆 BÜYÜK ŞAMPİYON 🏆";
+
   document.getElementById("bar").style.width="100%";
+
   document.getElementById("result").innerHTML=
-   "👑 "+remaining[0].name+" 👑<br><br>💗 Öykü'nün favorisi belli oldu!";
+  "👑 "+remaining[0].name+" 👑"+
+  "<br>💗 Öykü'nün favorisi belli oldu!";
+
   return;
  }
 
- round++;
  current=remaining.splice(0,2);
+
  document.getElementById("counter").innerText=
- "TUR "+round+" • Kimi seçiyorsun?";
+ "TUR "+(selectedCount+1)+" • KİMİ SEÇİYORSUN?";
+
  document.getElementById("bar").style.width=
  (selectedCount/7*100)+"%";
+
  showPlayers();
 }
 
 function showPlayers(){
+
  const area=document.getElementById("players");
  area.innerHTML="";
 
  current.forEach((person,index)=>{
+
   const card=document.createElement("div");
   card.className="player";
 
   const img=document.createElement("img");
   img.src=person.image;
   img.alt=person.name;
-  img.onerror=()=>{
-   img.src="https://placehold.co/400x500/35172f/ffffff?text=Foto+Yukle";
+
+  img.onerror=function(){
+   this.onerror=null;
+   this.src="https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
   };
 
   const name=document.createElement("h2");
   name.innerText=person.name;
 
-  card.append(img,name);
+  card.appendChild(img);
+  card.appendChild(name);
+
   card.onclick=()=>choose(index);
+
   area.appendChild(card);
+
  });
 }
 
 function choose(index){
+
  const winner=current[index];
+
  remaining.push(winner);
+
  selectedCount++;
+
  nextRound();
 }
 
 restart();
+
 </script>
+
 </body>
 </html>
