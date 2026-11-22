@@ -138,8 +138,12 @@ button{
  transform:translate(-50%,-100px);
  touch-action:none;
  user-select:none;
+ -webkit-user-select:none;
+ cursor:grab;
  will-change:transform,opacity;
 }
+
+#lidyaNotification:active{cursor:grabbing}
 
 #lidyaNotification.lidya-visible{
  display:block;
@@ -223,8 +227,6 @@ button{
 
 <body>
 
-<!-- LİDYA BİLDİRİMİ -->
-
 <div id="lidyaNotification">
  <div class="lidya-header">
   <div class="lidya-avatar">💗</div>
@@ -236,8 +238,6 @@ button{
  </div>
 </div>
 
-<!-- ŞİFRE EKRANI -->
-
 <div id="passwordScreen">
  <div class="heart">🔒</div>
  <div class="home-title">Özel Teste Giriş</div>
@@ -246,17 +246,13 @@ button{
   küçük bir soruyu doğru cevaplamalısın.
  </p>
  <h3>Doruk'un fetişi nedir?</h3>
-
  <input id="passwordAnswer" class="password-input"
   type="text" placeholder="Cevabını yaz..." autocomplete="off">
-
  <button type="button" class="start-button" onclick="checkPassword()">
   🔓 CEVABI GÖNDER
  </button>
  <p id="passwordError" class="password-error"></p>
 </div>
-
-<!-- AÇILIŞ -->
 
 <div id="home">
  <div class="heart">💗</div>
@@ -271,8 +267,6 @@ button{
  </button>
  <p class="subtitle">32 aday • 1 büyük şampiyon</p>
 </div>
-
-<!-- OYUN -->
 
 <div id="game">
  <h1>💗 Öykü'nün Eriyip Bittiği<br>Fetiş Listesi 💗</h1>
@@ -297,8 +291,6 @@ button{
 </div>
 
 <div class="footer">Made by Doruk for Öykü</div>
-
-<!-- SÜRPRİZ POP-UP -->
 
 <div id="surprisePopup">
  <div class="popup-box">
@@ -355,8 +347,6 @@ let selectedCount=0;
 let roundIndex=0;
 let locked=false;
 
-const roundNames=["İLK TUR","SON 16","ÇEYREK FİNAL","YARI FİNAL","FİNAL"];
-
 /* ATEŞ ÖLÇER */
 
 function updateHeat(value){
@@ -377,12 +367,13 @@ function updateHeat(value){
 
 let lidyaShown=false;
 let lidyaAutoTimer=null;
-let lidyaDragging=false;
 let lidyaClosing=false;
-let startX=0;
-let startY=0;
-let moveX=0;
-let moveY=0;
+
+let pointerActive=false;
+let pointerStartX=0;
+let pointerStartY=0;
+let pointerMoveX=0;
+let pointerMoveY=0;
 
 const lidyaNotification=document.getElementById("lidyaNotification");
 
@@ -391,7 +382,7 @@ function showLidyaMessage(){
 
  lidyaShown=true;
  lidyaClosing=false;
- lidyaDragging=false;
+ pointerActive=false;
 
  lidyaNotification.style.display="block";
  lidyaNotification.style.transition="none";
@@ -412,7 +403,7 @@ function closeLidyaMessage(direction){
  if(lidyaClosing || lidyaNotification.style.display==="none") return;
 
  lidyaClosing=true;
- lidyaDragging=false;
+ pointerActive=false;
  clearTimeout(lidyaAutoTimer);
 
  const width=window.innerWidth+lidyaNotification.offsetWidth;
@@ -442,51 +433,57 @@ function closeLidyaMessage(direction){
  },350);
 }
 
-/* PARMAK HAREKETİ */
+/* IPHONE VE DİĞER CİHAZLAR İÇİN KAYDIRMA */
 
-lidyaNotification.addEventListener("touchstart",function(e){
+lidyaNotification.addEventListener("pointerdown",function(e){
  if(lidyaClosing) return;
 
- const touch=e.touches[0];
- startX=touch.clientX;
- startY=touch.clientY;
- moveX=0;
- moveY=0;
- lidyaDragging=true;
+ pointerActive=true;
+ pointerStartX=e.clientX;
+ pointerStartY=e.clientY;
+ pointerMoveX=0;
+ pointerMoveY=0;
 
  clearTimeout(lidyaAutoTimer);
+
  lidyaNotification.style.transition="none";
-},{passive:true});
 
-lidyaNotification.addEventListener("touchmove",function(e){
- if(!lidyaDragging || lidyaClosing) return;
+ try{
+  lidyaNotification.setPointerCapture(e.pointerId);
+ }catch(err){}
+});
 
- const touch=e.touches[0];
- moveX=touch.clientX-startX;
- moveY=touch.clientY-startY;
+lidyaNotification.addEventListener("pointermove",function(e){
+ if(!pointerActive || lidyaClosing) return;
 
- /* Parmağı gerçek zamanlı takip et */
+ pointerMoveX=e.clientX-pointerStartX;
+ pointerMoveY=e.clientY-pointerStartY;
+
  lidyaNotification.style.transform=
-  `translate(calc(-50% + ${moveX}px), ${moveY}px)`;
+  `translate(calc(-50% + ${pointerMoveX}px), ${pointerMoveY}px)`;
 
- const distance=Math.sqrt(moveX*moveX+moveY*moveY);
+ const distance=Math.sqrt(
+  pointerMoveX*pointerMoveX+pointerMoveY*pointerMoveY
+ );
+
  lidyaNotification.style.opacity=Math.max(.2,1-distance/350);
-},{passive:true});
+});
 
-lidyaNotification.addEventListener("touchend",function(){
- if(!lidyaDragging || lidyaClosing) return;
+function finishLidyaSwipe(){
+ if(!pointerActive || lidyaClosing) return;
 
- lidyaDragging=false;
+ pointerActive=false;
 
- const horizontal=Math.abs(moveX);
- const vertical=Math.abs(moveY);
+ const horizontal=Math.abs(pointerMoveX);
+ const vertical=Math.abs(pointerMoveY);
 
- if(horizontal>90 && horizontal>vertical){
-  closeLidyaMessage(moveX>0?"right":"left");
- }else if(moveY < -75 && vertical>horizontal){
+ if(horizontal>80 && horizontal>vertical){
+  closeLidyaMessage(pointerMoveX>0?"right":"left");
+ }
+ else if(pointerMoveY < -65 && vertical>horizontal){
   closeLidyaMessage("up");
- }else{
-  /* Yeterince sürüklenmediyse yerine dön */
+ }
+ else{
   lidyaNotification.style.transition=
    "transform .3s cubic-bezier(.2,.8,.2,1), opacity .3s ease";
 
@@ -497,7 +494,10 @@ lidyaNotification.addEventListener("touchend",function(){
    closeLidyaMessage("up");
   },6000);
  }
-},{passive:true});
+}
+
+lidyaNotification.addEventListener("pointerup",finishLidyaSwipe);
+lidyaNotification.addEventListener("pointercancel",finishLidyaSwipe);
 
 /* SÜRPRİZ POP-UP */
 
@@ -538,7 +538,7 @@ function restart(){
  roundIndex=0;
  lidyaShown=false;
  lidyaClosing=false;
- lidyaDragging=false;
+ pointerActive=false;
 
  clearTimeout(lidyaAutoTimer);
 
