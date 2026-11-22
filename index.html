@@ -125,7 +125,6 @@ button{
  position:fixed;
  top:15px;
  left:50%;
- transform:translateX(-50%);
  width:calc(100% - 30px);
  max-width:390px;
  z-index:10000;
@@ -136,8 +135,10 @@ button{
  text-align:left;
  box-shadow:0 8px 30px #0008;
  opacity:0;
- touch-action:pan-y;
+ transform:translate(-50%,-100px);
+ touch-action:none;
  user-select:none;
+ will-change:transform,opacity;
 }
 
 #lidyaNotification.lidya-visible{
@@ -178,26 +179,32 @@ button{
  from{opacity:0;transform:translate(-50%,-100px)}
  to{opacity:1;transform:translate(-50%,0)}
 }
+
 @keyframes popupEnter{
  from{opacity:0;transform:scale(.7)}
  to{opacity:1;transform:scale(1)}
 }
+
 @keyframes heartbeat{
  0%,100%{transform:scale(1)}
  50%{transform:scale(1.13)}
 }
+
 @keyframes vsPulse{
  0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}
  50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}
 }
+
 @keyframes cardEnter{
  from{opacity:0;transform:translateY(18px)}
  to{opacity:1;transform:translateY(0)}
 }
+
 @keyframes champion{
  from{transform:scale(1)}
  to{transform:scale(1.08)}
 }
+
 @keyframes heatPulse{
  from{filter:brightness(1);box-shadow:0 0 8px #ff922e}
  to{filter:brightness(1.5);box-shadow:0 0 22px #ff3030}
@@ -224,7 +231,6 @@ button{
   <div class="lidya-name">Lidya Pınar (Aşkım)</div>
   <div class="lidya-time">şimdi</div>
  </div>
-
  <div class="lidya-message">
   Beni kalbine koyduğun için bu oyunda yokum hayatım ❤️
  </div>
@@ -247,7 +253,6 @@ button{
  <button type="button" class="start-button" onclick="checkPassword()">
   🔓 CEVABI GÖNDER
  </button>
-
  <p id="passwordError" class="password-error"></p>
 </div>
 
@@ -256,17 +261,14 @@ button{
 <div id="home">
  <div class="heart">💗</div>
  <div class="home-title">Öykü'nün Eriyip Bittiği<br>Fetiş Listesi</div>
-
  <p class="home-text">
   Hazır mısın Öyküşüm? 👀<br>
   Birbirinden zor seçimler seni bekliyor.
   Bakalım sonunda kim kazanacak?
  </p>
-
  <button type="button" class="start-button" onclick="startGame()">
   💗 OYUNA BAŞLA 💗
  </button>
-
  <p class="subtitle">32 aday • 1 büyük şampiyon</p>
 </div>
 
@@ -291,7 +293,6 @@ button{
  <div class="players" id="players"></div>
  <div class="vs" id="vs">— VS —</div>
  <div id="result"></div>
-
  <button type="button" onclick="restart()">↻ Yeniden Başlat</button>
 </div>
 
@@ -376,9 +377,12 @@ function updateHeat(value){
 
 let lidyaShown=false;
 let lidyaAutoTimer=null;
-let lidyaStartX=0;
-let lidyaStartY=0;
+let lidyaDragging=false;
 let lidyaClosing=false;
+let startX=0;
+let startY=0;
+let moveX=0;
+let moveY=0;
 
 const lidyaNotification=document.getElementById("lidyaNotification");
 
@@ -387,13 +391,15 @@ function showLidyaMessage(){
 
  lidyaShown=true;
  lidyaClosing=false;
+ lidyaDragging=false;
 
  lidyaNotification.style.display="block";
- lidyaNotification.style.opacity="";
- lidyaNotification.style.transform="";
- lidyaNotification.style.transition="";
+ lidyaNotification.style.transition="none";
+ lidyaNotification.style.transform="translate(-50%,-100px)";
+ lidyaNotification.style.opacity="0";
 
  void lidyaNotification.offsetWidth;
+
  lidyaNotification.classList.add("lidya-visible");
 
  clearTimeout(lidyaAutoTimer);
@@ -406,18 +412,25 @@ function closeLidyaMessage(direction){
  if(lidyaClosing || lidyaNotification.style.display==="none") return;
 
  lidyaClosing=true;
+ lidyaDragging=false;
  clearTimeout(lidyaAutoTimer);
 
  const width=window.innerWidth+lidyaNotification.offsetWidth;
- let x=0,y=0;
+ let x=0;
+ let y=0;
 
  if(direction==="left") x=-width;
- else if(direction==="right") x=width;
- else y=-150;
+ if(direction==="right") x=width;
+ if(direction==="up") y=-200;
 
  lidyaNotification.classList.remove("lidya-visible");
- lidyaNotification.style.transition="transform .3s ease, opacity .3s ease";
- lidyaNotification.style.transform=`translate(${x}px,${y}px)`;
+
+ lidyaNotification.style.transition=
+  "transform .35s cubic-bezier(.4,0,1,1), opacity .35s ease";
+
+ lidyaNotification.style.transform=
+  `translate(calc(-50% + ${x}px), ${y}px)`;
+
  lidyaNotification.style.opacity="0";
 
  setTimeout(function(){
@@ -426,27 +439,63 @@ function closeLidyaMessage(direction){
   lidyaNotification.style.opacity="";
   lidyaNotification.style.transition="";
   lidyaClosing=false;
- },320);
+ },350);
 }
 
-/* KAYDIRARAK KAPATMA */
+/* PARMAK HAREKETİ */
 
 lidyaNotification.addEventListener("touchstart",function(e){
- lidyaStartX=e.touches[0].clientX;
- lidyaStartY=e.touches[0].clientY;
+ if(lidyaClosing) return;
+
+ const touch=e.touches[0];
+ startX=touch.clientX;
+ startY=touch.clientY;
+ moveX=0;
+ moveY=0;
+ lidyaDragging=true;
+
+ clearTimeout(lidyaAutoTimer);
+ lidyaNotification.style.transition="none";
 },{passive:true});
 
-lidyaNotification.addEventListener("touchend",function(e){
- const endX=e.changedTouches[0].clientX;
- const endY=e.changedTouches[0].clientY;
+lidyaNotification.addEventListener("touchmove",function(e){
+ if(!lidyaDragging || lidyaClosing) return;
 
- const diffX=endX-lidyaStartX;
- const diffY=endY-lidyaStartY;
+ const touch=e.touches[0];
+ moveX=touch.clientX-startX;
+ moveY=touch.clientY-startY;
 
- if(Math.abs(diffX)>65 && Math.abs(diffX)>Math.abs(diffY)){
-  closeLidyaMessage(diffX>0?"right":"left");
- }else if(diffY < -65 && Math.abs(diffY)>Math.abs(diffX)){
+ /* Parmağı gerçek zamanlı takip et */
+ lidyaNotification.style.transform=
+  `translate(calc(-50% + ${moveX}px), ${moveY}px)`;
+
+ const distance=Math.sqrt(moveX*moveX+moveY*moveY);
+ lidyaNotification.style.opacity=Math.max(.2,1-distance/350);
+},{passive:true});
+
+lidyaNotification.addEventListener("touchend",function(){
+ if(!lidyaDragging || lidyaClosing) return;
+
+ lidyaDragging=false;
+
+ const horizontal=Math.abs(moveX);
+ const vertical=Math.abs(moveY);
+
+ if(horizontal>90 && horizontal>vertical){
+  closeLidyaMessage(moveX>0?"right":"left");
+ }else if(moveY < -75 && vertical>horizontal){
   closeLidyaMessage("up");
+ }else{
+  /* Yeterince sürüklenmediyse yerine dön */
+  lidyaNotification.style.transition=
+   "transform .3s cubic-bezier(.2,.8,.2,1), opacity .3s ease";
+
+  lidyaNotification.style.transform="translate(-50%,0)";
+  lidyaNotification.style.opacity="1";
+
+  lidyaAutoTimer=setTimeout(function(){
+   closeLidyaMessage("up");
+  },6000);
  }
 },{passive:true});
 
@@ -489,6 +538,7 @@ function restart(){
  roundIndex=0;
  lidyaShown=false;
  lidyaClosing=false;
+ lidyaDragging=false;
 
  clearTimeout(lidyaAutoTimer);
 
@@ -499,7 +549,6 @@ function restart(){
  lidyaNotification.style.transition="";
 
  updateHeat(0);
-
  document.getElementById("result").innerHTML="";
  document.getElementById("vs").style.display="block";
  document.getElementById("bar").style.width="0%";
