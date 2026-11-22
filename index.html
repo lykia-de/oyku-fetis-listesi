@@ -5,34 +5,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#170b17">
-<title>Öykü'nün Favorileri 💗</title>
+<title>Öykü'nün Eriyip Bittiği Fetiş Listesi 💗</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
  margin:0;min-height:100vh;padding:25px 15px;
  background:linear-gradient(145deg,#100711,#351027,#160b19);
  color:white;font-family:Arial,sans-serif;text-align:center;
 }
+
 h1{color:#ff8bc9;font-size:27px;line-height:1.35;margin-top:25px}
 .subtitle{color:#e8b8d4;font-size:14px}
+
 #passwordScreen,#home{
  max-width:600px;margin:55px auto;padding:30px 20px;
  background:linear-gradient(145deg,#35172f,#1c1020);
  border:1px solid #a43e78;border-radius:25px;
  box-shadow:0 0 35px #e94c9c30;
 }
+
 .password-input{
  display:block;width:90%;max-width:300px;padding:16px;
  margin:20px auto;border:1px solid #a43e78;border-radius:12px;
  background:#fff0f8;color:#42132f;font-size:17px;
  text-align:center;outline:none;
 }
+
 .password-error{color:#ff8bc9;font-weight:bold;min-height:22px}
 #home{display:none}
 .heart{font-size:65px;animation:heartbeat 1.5s infinite}
 .home-title{color:#ff8bc9;font-size:29px;line-height:1.4}
 .home-text{color:#e8b8d4;line-height:1.7}
+
 .start-button{
  display:block;width:90%;max-width:300px;padding:17px;
  border:0;border-radius:15px;
@@ -40,6 +46,7 @@ h1{color:#ff8bc9;font-size:27px;line-height:1.35;margin-top:25px}
  color:white;font-size:18px;font-weight:bold;
  margin:25px auto;cursor:pointer;
 }
+
 #game{display:none}
 .counter{margin:25px 0 12px;color:#ff9dcc;font-weight:bold;font-size:17px}
 .progress{
@@ -47,6 +54,7 @@ h1{color:#ff8bc9;font-size:27px;line-height:1.35;margin-top:25px}
  border-radius:20px;margin:15px auto 25px;overflow:hidden;
 }
 #bar{height:100%;width:0;background:#ff8bc9;transition:width .5s}
+
 .heat-container{
  width:90%;max-width:400px;margin:0 auto 25px;padding:15px;
  background:#281326;border:1px solid #8c3c68;border-radius:16px;
@@ -64,6 +72,7 @@ h1{color:#ff8bc9;font-size:27px;line-height:1.35;margin-top:25px}
 }
 #heatMessage{margin-top:9px;color:#ffc0dc;font-size:12px}
 #heatBar.hot{animation:heatPulse .7s infinite alternate}
+
 .players{display:flex;gap:12px;max-width:750px;margin:auto}
 .player{
  flex:1;min-width:0;background:#35172f;border:2px solid #a43e78;
@@ -79,6 +88,7 @@ h1{color:#ff8bc9;font-size:27px;line-height:1.35;margin-top:25px}
 .player.winner{border-color:#ff8bc9;box-shadow:0 0 25px #ff55b5;transform:scale(1.04)}
 .player.loser{opacity:.25;transform:scale(.94)}
 .vs{color:#ff8bc9;font-size:34px;font-weight:900;margin:22px;animation:vsPulse 1.5s infinite}
+
 button{
  background:#ed5ba7;color:white;border:0;border-radius:12px;
  padding:14px 25px;font-size:16px;font-weight:bold;
@@ -87,8 +97,6 @@ button{
 #result{color:#ff9dcc;font-size:25px;margin:25px 0;line-height:1.6}
 .champion{animation:champion 1s ease infinite alternate}
 .footer{color:#a98ba0;font-size:12px;margin-top:35px}
-
-/* SÜRPRİZ BİLDİRİM */
 
 #surprisePopup{
  display:none;position:fixed;inset:0;z-index:9999;
@@ -123,18 +131,31 @@ button{
  color:white;
  border-radius:16px;
  padding:14px;
+ padding-right:42px;
  text-align:left;
  box-shadow:0 8px 30px #0008;
- opacity:0;
 }
 
 #lidyaNotification.lidya-visible{
  display:block;
- animation:lidyaEnter .6s ease forwards;
+ animation:lidyaEnter .6s cubic-bezier(.2,.8,.2,1) forwards;
 }
 
-#lidyaNotification.lidya-fade{
- animation:lidyaFade 2.5s ease forwards;
+#lidyaNotification.lidya-hide{
+ animation:lidyaExit .4s ease forwards;
+}
+
+.lidya-close{
+ position:absolute;
+ top:5px;
+ right:10px;
+ color:#dce5e9;
+ font-size:25px;
+ cursor:pointer;
+ background:none;
+ border:0;
+ padding:0;
+ margin:0;
 }
 
 .lidya-header{
@@ -142,7 +163,6 @@ button{
  align-items:center;
  gap:10px;
  margin-bottom:9px;
- padding-right:25px;
 }
 
 .lidya-avatar{
@@ -167,27 +187,28 @@ button{
  line-height:1.5;
 }
 
-.lidya-close{
- position:absolute;
- top:7px;
- right:12px;
- color:#dce5e9;
- font-size:23px;
- cursor:pointer;
- background:none;
- border:0;
- padding:0;
- margin:0;
+@keyframes lidyaEnter{
+ from{
+  opacity:0;
+  transform:translate(-50%,-100px);
+ }
+ to{
+  opacity:1;
+  transform:translate(-50%,0);
+ }
 }
 
-@keyframes lidyaEnter{
- from{opacity:0;transform:translate(-50%,-20px)}
- to{opacity:1;transform:translate(-50%,0)}
+@keyframes lidyaExit{
+ from{
+  opacity:1;
+  transform:translate(-50%,0);
+ }
+ to{
+  opacity:0;
+  transform:translate(-50%,-60px);
+ }
 }
-@keyframes lidyaFade{
- from{opacity:1;transform:translate(-50%,0)}
- to{opacity:0;transform:translate(-50%,-15px)}
-}
+
 @keyframes popupEnter{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 @keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
 @keyframes vsPulse{0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}}
@@ -208,49 +229,77 @@ button{
 
 <body>
 
+<!-- LİDYA BİLDİRİMİ -->
+
 <div id="lidyaNotification">
- <button class="lidya-close" onclick="closeLidyaMessage()">×</button>
+
+ <button class="lidya-close" type="button"
+  onclick="closeLidyaMessage()">×</button>
+
  <div class="lidya-header">
   <div class="lidya-avatar">💗</div>
-  <div class="lidya-name">Lidya Pınar</div>
+  <div class="lidya-name">Lidya Pınar (Aşkım)</div>
   <div class="lidya-time">şimdi</div>
  </div>
+
  <div class="lidya-message">
-  Beni düşündüğün için teşekkürler, ben bu oyunda yokum 😊
+  Beni kalbine koyduğun için bu oyunda yokum hayatım ❤️
  </div>
+
 </div>
+
+<!-- ŞİFRE EKRANI -->
 
 <div id="passwordScreen">
  <div class="heart">🔒</div>
  <div class="home-title">Özel Teste Giriş</div>
- <p class="home-text">Özel teste erişebilmek için Doruk hakkında küçük bir soruyu doğru cevaplamalısın.</p>
- <h3>Doruk'un en sevdiği spor nedir?</h3>
- <input id="passwordAnswer" class="password-input" type="text" placeholder="Cevabını yaz..." autocomplete="off">
- <button type="button" class="start-button" onclick="checkPassword()">🔓 CEVABI GÖNDER</button>
+ <p class="home-text">
+  Özel teste erişebilmek için Doruk hakkında
+  küçük bir soruyu doğru cevaplamalısın.
+ </p>
+ <h3>Doruk'un fetişi nedir?</h3>
+
+ <input id="passwordAnswer" class="password-input" type="text"
+  placeholder="Cevabını yaz..." autocomplete="off">
+
+ <button type="button" class="start-button" onclick="checkPassword()">
+  🔓 CEVABI GÖNDER
+ </button>
+
  <p id="passwordError" class="password-error"></p>
 </div>
 
+<!-- AÇILIŞ -->
+
 <div id="home">
  <div class="heart">💗</div>
- <div class="home-title">Öykü'nün Favorileri</div>
+ <div class="home-title">Öykü'nün Eriyip Bittiği<br>Fetiş Listesi</div>
+
  <p class="home-text">
-  Hazır mısın Öykü? 👀<br>
+  Hazır mısın Öyküşüm? 👀<br>
   Birbirinden zor seçimler seni bekliyor.
   Bakalım sonunda kim kazanacak?
  </p>
- <button type="button" class="start-button" onclick="startGame()">💗 OYUNA BAŞLA 💗</button>
+
+ <button type="button" class="start-button" onclick="startGame()">
+  💗 OYUNA BAŞLA 💗
+ </button>
+
  <p class="subtitle">32 aday • 1 büyük şampiyon</p>
 </div>
 
+<!-- OYUN -->
+
 <div id="game">
- <h1>💗 Öykü'nün Favorileri 💗</h1>
- <p class="subtitle">En çok beğendiğin kim? 👀</p>
+ <h1>💗 Öykü'nün Eriyip Bittiği<br>Fetiş Listesi 💗</h1>
+ <p class="subtitle">En çok yükseldiğin kim? 👀</p>
+
  <div class="counter" id="counter">SEÇİMİNİ YAP!</div>
  <div class="progress"><div id="bar"></div></div>
 
  <div class="heat-container">
   <div class="heat-heading">
-   <span>🔥 HEYECAN ÖLÇER</span>
+   <span>🔥 ATEŞ ÖLÇER</span>
    <span id="heatPercent">%0</span>
   </div>
   <div class="heat-track"><div id="heatBar"></div></div>
@@ -260,33 +309,39 @@ button{
  <div class="players" id="players"></div>
  <div class="vs" id="vs">— VS —</div>
  <div id="result"></div>
+
  <button type="button" onclick="restart()">↻ Yeniden Başlat</button>
 </div>
 
-<div class="footer">Made by Doruk</div>
+<div class="footer">Made by Doruk for Sapık Öyküş</div>
+
+<!-- SÜRPRİZ POP-UP -->
 
 <div id="surprisePopup">
  <div class="popup-box">
   <span class="popup-close" onclick="closePopup()">×</span>
   <div style="font-size:45px">🚨</div>
-  <div class="popup-title">SÜRPRİZ!</div>
-  <div class="popup-message">Doruk 2894 km uzakta ve sana selam gönderiyor! 💗</div>
+  <div class="popup-title">ÇİŞİM GELDİ!</div>
+  <div class="popup-message">
+   Doruk 2894 km uzakta ve üzerine işemek istiyor! 🦶🏻
+  </div>
  </div>
 </div>
 
 <script>
 
-/* ŞİFRE */
+/* ŞİFRE KONTROLÜ */
 
 function checkPassword(){
  const answer = document.getElementById("passwordAnswer")
   .value.trim().toLocaleLowerCase("tr-TR");
 
- if(answer === "futbol"){
+ if(answer === "ayak"){
   document.getElementById("passwordScreen").style.display = "none";
   document.getElementById("home").style.display = "block";
  }else{
-  document.getElementById("passwordError").innerText = "❌ Yanlış cevap! Tekrar dene.";
+  document.getElementById("passwordError").innerText =
+   "❌ Yanlış cevap! Tekrar dene.";
  }
 }
 
@@ -305,6 +360,7 @@ const people = [
  {name:"Dexter Morgan",image:"dexter.JPG"},
  {name:"Matheo Arntzen",image:"matheo.JPG"},
  {name:"Lukas Bergvall",image:"bergvall.JPG"},
+
  ...Array.from({length:24},(_,i)=>({
   name:"Demo Oyuncu " + String(i+1).padStart(2,"0"),
   image:"https://placehold.co/400x500/35172f/ffffff?text=Demo+"+(i+1)
@@ -318,14 +374,18 @@ let selectedCount = 0;
 let roundIndex = 0;
 let locked = false;
 let lidyaShown = false;
-let lidyaTimer = null;
-let lidyaFadeTimer = null;
 
 /* TUR İSİMLERİ */
 
-const roundNames = ["İLK TUR","SON 16","ÇEYREK FİNAL","YARI FİNAL","FİNAL"];
+const roundNames = [
+ "İLK TUR",
+ "SON 16",
+ "ÇEYREK FİNAL",
+ "YARI FİNAL",
+ "FİNAL"
+];
 
-/* HEYECAN ÖLÇER */
+/* ATEŞ ÖLÇER */
 
 function updateHeat(value){
  const heatBar = document.getElementById("heatBar");
@@ -341,56 +401,42 @@ function updateHeat(value){
  }else if(value < 60){
   heatMessage.innerText = "🌡️ Ortam ısınmaya başladı!";
  }else if(value < 100){
-  heatMessage.innerText = "🔥🔥 Heyecan artıyor!";
+  heatMessage.innerText = "🔥🔥 Alevler yükseliyor!";
  }else{
-  heatMessage.innerText = "🔥🔥🔥 FİNAL HEYECANI!";
+  heatMessage.innerText = "🔥🔥🔥 ORTALIK YANIYOR!";
  }
 }
 
-/* LİDYA BİLDİRİMİ */
+/* LİDYA MESAJI */
 
 function showLidyaMessage(){
  if(lidyaShown) return;
 
  lidyaShown = true;
 
- const notification = document.getElementById("lidyaNotification");
-
- clearTimeout(lidyaTimer);
- clearTimeout(lidyaFadeTimer);
+ const notification =
+  document.getElementById("lidyaNotification");
 
  notification.style.display = "block";
- notification.classList.remove("lidya-fade");
+ notification.classList.remove("lidya-hide");
  notification.classList.remove("lidya-visible");
 
  void notification.offsetWidth;
 
  notification.classList.add("lidya-visible");
-
- lidyaTimer = setTimeout(function(){
-  notification.classList.add("lidya-fade");
-
-  lidyaFadeTimer = setTimeout(function(){
-   notification.style.display = "none";
-   notification.classList.remove("lidya-visible","lidya-fade");
-  },2500);
-
- },5000);
 }
 
 function closeLidyaMessage(){
- const notification = document.getElementById("lidyaNotification");
+ const notification =
+  document.getElementById("lidyaNotification");
 
- clearTimeout(lidyaTimer);
- clearTimeout(lidyaFadeTimer);
+ notification.classList.remove("lidya-visible");
+ notification.classList.add("lidya-hide");
 
- notification.classList.remove("lidya-fade");
- notification.classList.add("lidya-fade");
-
- lidyaFadeTimer = setTimeout(function(){
+ setTimeout(function(){
   notification.style.display = "none";
-  notification.classList.remove("lidya-visible","lidya-fade");
- },2500);
+  notification.classList.remove("lidya-hide");
+ },400);
 }
 
 /* SÜRPRİZ POP-UP */
@@ -403,6 +449,7 @@ function schedulePopup(){
 
  popupTimer = setTimeout(function(){
   if(popupShown) return;
+
   popupShown = true;
   document.getElementById("surprisePopup").style.display = "flex";
  },5000 + Math.random() * 12000);
@@ -412,11 +459,10 @@ function closePopup(){
  document.getElementById("surprisePopup").style.display = "none";
 }
 
-/* OYUNU BAŞLAT */
-
 function startGame(){
  document.getElementById("home").style.display = "none";
  document.getElementById("game").style.display = "block";
+
  restart();
 
  if(!popupShown && !popupTimer) schedulePopup();
@@ -433,12 +479,11 @@ function restart(){
  roundIndex = 0;
  lidyaShown = false;
 
- clearTimeout(lidyaTimer);
- clearTimeout(lidyaFadeTimer);
+ const notification =
+  document.getElementById("lidyaNotification");
 
- const notification = document.getElementById("lidyaNotification");
  notification.style.display = "none";
- notification.classList.remove("lidya-visible","lidya-fade");
+ notification.classList.remove("lidya-visible","lidya-hide");
 
  updateHeat(0);
 
@@ -449,7 +494,7 @@ function restart(){
  nextRound();
 }
 
-/* SONRAKİ TUR */
+/* SONRAKİ MAÇ / TUR */
 
 function nextRound(){
 
@@ -466,7 +511,8 @@ function nextRound(){
    updateHeat(100);
 
    document.getElementById("result").innerHTML =
-    "<div class='champion'>👑 " + champion.name +
+    "<div class='champion'>👑 " +
+    champion.name +
     " 👑</div><br>💗 Turnuvanın kazananı!";
 
    return;
@@ -480,13 +526,17 @@ function nextRound(){
  current = remaining.splice(0,2);
 
  document.getElementById("counter").innerText =
-  roundNames[roundIndex] + " • MAÇ " +
-  (roundWinners.length + 1) + " • KİMİ SEÇİYORSUN?";
+  roundNames[roundIndex] +
+  " • MAÇ " +
+  (roundWinners.length + 1) +
+  " • KİMİ SEÇİYORSUN?";
 
  document.getElementById("bar").style.width =
   (selectedCount / 31 * 100) + "%";
 
  showPlayers();
+
+ /* ÇEYREK FİNAL BAŞLANGICINDA LİDYA MESAJI */
 
  if(roundIndex === 2 && !lidyaShown){
   showLidyaMessage();
