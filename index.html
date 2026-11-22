@@ -11,340 +11,117 @@
 *{box-sizing:border-box}
 
 body{
- margin:0;
- min-height:100vh;
- padding:25px 15px;
+ margin:0;min-height:100vh;padding:25px 15px;
  background:linear-gradient(145deg,#100711,#351027,#160b19);
- color:white;
- font-family:Arial,sans-serif;
- text-align:center;
+ color:white;font-family:Arial,sans-serif;text-align:center;
 }
 
-h1{
- color:#ff8bc9;
- font-size:27px;
- line-height:1.35;
- margin-top:25px;
-}
-
+h1{color:#ff8bc9;font-size:27px;line-height:1.35;margin-top:25px}
 .subtitle{color:#e8b8d4;font-size:14px}
 
-/* ÖZEL GİRİŞ EKRANI */
-
-#passwordScreen{
- max-width:600px;
- margin:55px auto;
- padding:30px 20px;
+#passwordScreen,#home{
+ max-width:600px;margin:55px auto;padding:30px 20px;
  background:linear-gradient(145deg,#35172f,#1c1020);
- border:1px solid #a43e78;
- border-radius:25px;
+ border:1px solid #a43e78;border-radius:25px;
  box-shadow:0 0 35px #e94c9c30;
 }
 
 .password-input{
- display:block;
- width:90%;
- max-width:300px;
- padding:16px;
- margin:20px auto;
- border:1px solid #a43e78;
- border-radius:12px;
- background:#fff0f8;
- color:#42132f;
- font-size:17px;
- text-align:center;
- outline:none;
+ display:block;width:90%;max-width:300px;padding:16px;
+ margin:20px auto;border:1px solid #a43e78;border-radius:12px;
+ background:#fff0f8;color:#42132f;font-size:17px;
+ text-align:center;outline:none;
 }
 
-.password-error{
- color:#ff8bc9;
- font-weight:bold;
- min-height:22px;
-}
-
-/* AÇILIŞ EKRANI */
-
-#home{
- display:none;
- max-width:600px;
- margin:55px auto;
- padding:30px 20px;
- background:linear-gradient(145deg,#35172f,#1c1020);
- border:1px solid #a43e78;
- border-radius:25px;
- box-shadow:0 0 35px #e94c9c30;
-}
-
-.heart{
- font-size:65px;
- animation:heartbeat 1.5s infinite;
-}
-
-.home-title{
- color:#ff8bc9;
- font-size:29px;
- line-height:1.4;
-}
-
-.home-text{
- color:#e8b8d4;
- line-height:1.7;
-}
+.password-error{color:#ff8bc9;font-weight:bold;min-height:22px}
+#home{display:none}
+.heart{font-size:65px;animation:heartbeat 1.5s infinite}
+.home-title{color:#ff8bc9;font-size:29px;line-height:1.4}
+.home-text{color:#e8b8d4;line-height:1.7}
 
 .start-button{
- display:block;
- width:90%;
- max-width:300px;
- padding:17px;
- border:0;
- border-radius:15px;
+ display:block;width:90%;max-width:300px;padding:17px;
+ border:0;border-radius:15px;
  background:linear-gradient(90deg,#e94c9c,#ff8bc9);
- color:white;
- font-size:18px;
- font-weight:bold;
- margin:25px auto;
- cursor:pointer;
+ color:white;font-size:18px;font-weight:bold;
+ margin:25px auto;cursor:pointer;
 }
-
-/* OYUN EKRANI */
 
 #game{display:none}
-
-.counter{
- margin:25px 0 12px;
- color:#ff9dcc;
- font-weight:bold;
- font-size:17px;
-}
-
+.counter{margin:25px 0 12px;color:#ff9dcc;font-weight:bold;font-size:17px}
 .progress{
- width:90%;
- max-width:400px;
- height:7px;
- background:#47243d;
- border-radius:20px;
- margin:15px auto 25px;
- overflow:hidden;
+ width:90%;max-width:400px;height:7px;background:#47243d;
+ border-radius:20px;margin:15px auto 25px;overflow:hidden;
 }
-
-#bar{
- height:100%;
- width:0;
- background:#ff8bc9;
- transition:width .5s;
-}
-
-/* ATEŞ ÖLÇER */
+#bar{height:100%;width:0;background:#ff8bc9;transition:width .5s}
 
 .heat-container{
- width:90%;
- max-width:400px;
- margin:0 auto 25px;
- padding:15px;
- background:#281326;
- border:1px solid #8c3c68;
- border-radius:16px;
+ width:90%;max-width:400px;margin:0 auto 25px;padding:15px;
+ background:#281326;border:1px solid #8c3c68;border-radius:16px;
 }
-
 .heat-heading{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:10px;
- color:#ffd1e8;
- font-size:14px;
- font-weight:bold;
+ display:flex;justify-content:space-between;align-items:center;
+ margin-bottom:10px;color:#ffd1e8;font-size:14px;font-weight:bold;
 }
-
-#heatPercent{
- color:#ffca55;
- font-size:20px;
-}
-
-.heat-track{
- width:100%;
- height:15px;
- background:#49283e;
- border-radius:20px;
- overflow:hidden;
-}
-
+#heatPercent{color:#ffca55;font-size:20px}
+.heat-track{width:100%;height:15px;background:#49283e;border-radius:20px;overflow:hidden}
 #heatBar{
- width:0%;
- height:100%;
- border-radius:20px;
+ width:0%;height:100%;border-radius:20px;
  background:linear-gradient(90deg,#ffe45c,#ff922e,#ff3030);
- transition:width .6s ease,filter .6s ease;
- box-shadow:0 0 12px #ff922e;
+ transition:width .6s ease,filter .6s ease;box-shadow:0 0 12px #ff922e;
 }
+#heatMessage{margin-top:9px;color:#ffc0dc;font-size:12px}
+#heatBar.hot{animation:heatPulse .7s infinite alternate}
 
-#heatMessage{
- margin-top:9px;
- color:#ffc0dc;
- font-size:12px;
-}
-
-#heatBar.hot{
- animation:heatPulse .7s infinite alternate;
-}
-
-@keyframes heatPulse{
- from{filter:brightness(1);box-shadow:0 0 8px #ff922e}
- to{filter:brightness(1.5);box-shadow:0 0 22px #ff3030}
-}
-
-.players{
- display:flex;
- gap:12px;
- max-width:750px;
- margin:auto;
-}
-
+.players{display:flex;gap:12px;max-width:750px;margin:auto}
 .player{
- flex:1;
- min-width:0;
- background:#35172f;
- border:2px solid #a43e78;
- border-radius:18px;
- padding:9px;
- cursor:pointer;
+ flex:1;min-width:0;background:#35172f;border:2px solid #a43e78;
+ border-radius:18px;padding:9px;cursor:pointer;
  transition:transform .3s,opacity .3s,box-shadow .3s;
  animation:cardEnter .45s ease;
 }
-
 .player img{
- width:100%;
- height:260px;
- object-fit:cover;
- border-radius:12px;
- background:#211321;
+ width:100%;height:260px;object-fit:cover;
+ border-radius:12px;background:#211321;
 }
-
-.player h2{
- font-size:16px;
- overflow-wrap:anywhere;
-}
-
-.player.winner{
- border-color:#ff8bc9;
- box-shadow:0 0 25px #ff55b5;
- transform:scale(1.04);
-}
-
-.player.loser{
- opacity:.25;
- transform:scale(.94);
-}
-
-.vs{
- color:#ff8bc9;
- font-size:34px;
- font-weight:900;
- margin:22px;
- animation:vsPulse 1.5s infinite;
-}
+.player h2{font-size:16px;overflow-wrap:anywhere}
+.player.winner{border-color:#ff8bc9;box-shadow:0 0 25px #ff55b5;transform:scale(1.04)}
+.player.loser{opacity:.25;transform:scale(.94)}
+.vs{color:#ff8bc9;font-size:34px;font-weight:900;margin:22px;animation:vsPulse 1.5s infinite}
 
 button{
- background:#ed5ba7;
- color:white;
- border:0;
- border-radius:12px;
- padding:14px 25px;
- font-size:16px;
- font-weight:bold;
- margin:15px;
- cursor:pointer;
+ background:#ed5ba7;color:white;border:0;border-radius:12px;
+ padding:14px 25px;font-size:16px;font-weight:bold;
+ margin:15px;cursor:pointer;
 }
-
-#result{
- color:#ff9dcc;
- font-size:25px;
- margin:25px 0;
- line-height:1.6;
-}
-
-.champion{
- animation:champion 1s ease infinite alternate;
-}
-
-.footer{
- color:#a98ba0;
- font-size:12px;
- margin-top:35px;
-}
-
-/* SÜRPRİZ POP-UP */
+#result{color:#ff9dcc;font-size:25px;margin:25px 0;line-height:1.6}
+.champion{animation:champion 1s ease infinite alternate}
+.footer{color:#a98ba0;font-size:12px;margin-top:35px}
 
 #surprisePopup{
- display:none;
- position:fixed;
- inset:0;
- z-index:9999;
- background:rgba(0,0,0,.82);
- align-items:center;
- justify-content:center;
- padding:20px;
+ display:none;position:fixed;inset:0;z-index:9999;
+ background:rgba(0,0,0,.82);align-items:center;
+ justify-content:center;padding:20px;
 }
-
 .popup-box{
- position:relative;
- width:100%;
- max-width:340px;
- padding:28px 20px;
+ position:relative;width:100%;max-width:340px;padding:28px 20px;
  background:linear-gradient(145deg,#fff0f8,#ffd1e8);
- color:#42132f;
- border:3px solid #ff8bc9;
- border-radius:18px;
- box-shadow:0 0 35px #ff55b5;
- animation:popupEnter .35s ease;
+ color:#42132f;border:3px solid #ff8bc9;border-radius:18px;
+ box-shadow:0 0 35px #ff55b5;animation:popupEnter .35s ease;
 }
-
 .popup-close{
- position:absolute;
- top:7px;
- right:12px;
- color:#54203d;
- font-size:30px;
- font-weight:bold;
- cursor:pointer;
+ position:absolute;top:7px;right:12px;color:#54203d;
+ font-size:30px;font-weight:bold;cursor:pointer;
 }
+.popup-title{font-size:22px;font-weight:bold;color:#d52d87;margin:10px 0}
+.popup-message{font-size:17px;line-height:1.6}
 
-.popup-title{
- font-size:22px;
- font-weight:bold;
- color:#d52d87;
- margin:10px 0;
-}
-
-.popup-message{
- font-size:17px;
- line-height:1.6;
-}
-
-@keyframes popupEnter{
- from{opacity:0;transform:scale(.7)}
- to{opacity:1;transform:scale(1)}
-}
-
-@keyframes heartbeat{
- 0%,100%{transform:scale(1)}
- 50%{transform:scale(1.13)}
-}
-
-@keyframes vsPulse{
- 0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}
- 50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}
-}
-
-@keyframes cardEnter{
- from{opacity:0;transform:translateY(18px)}
- to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes champion{
- from{transform:scale(1)}
- to{transform:scale(1.08)}
-}
+@keyframes popupEnter{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
+@keyframes vsPulse{0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}}
+@keyframes cardEnter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes champion{from{transform:scale(1)}to{transform:scale(1.08)}}
+@keyframes heatPulse{from{filter:brightness(1);box-shadow:0 0 8px #ff922e}to{filter:brightness(1.5);box-shadow:0 0 22px #ff3030}}
 
 @media(max-width:450px){
  .player img{height:190px}
@@ -359,115 +136,60 @@ button{
 
 <body>
 
-<!-- ÖZEL GİRİŞ -->
-
 <div id="passwordScreen">
-
  <div class="heart">🔒</div>
-
- <div class="home-title">
-  Özel Teste Giriş
- </div>
-
+ <div class="home-title">Özel Teste Giriş</div>
  <p class="home-text">
   Özel teste erişebilmek için Doruk hakkında
   küçük bir soruyu doğru cevaplamalısın.
  </p>
-
  <h3>Doruk'un fetişi nedir?</h3>
-
- <input
-  id="passwordAnswer"
-  class="password-input"
-  type="text"
-  placeholder="Cevabını yaz..."
-  autocomplete="off"
- >
-
- <button
-  type="button"
-  class="start-button"
-  onclick="checkPassword()"
- >
+ <input id="passwordAnswer" class="password-input" type="text"
+  placeholder="Cevabını yaz..." autocomplete="off">
+ <button type="button" class="start-button" onclick="checkPassword()">
   🔓 CEVABI GÖNDER
  </button>
-
  <p id="passwordError" class="password-error"></p>
-
 </div>
 
-<!-- AÇILIŞ -->
-
 <div id="home">
-
  <div class="heart">💗</div>
-
- <div class="home-title">
-  Öykü'nün Eriyip Bittiği<br>
-  Fetiş Listesi
- </div>
-
+ <div class="home-title">Öykü'nün Eriyip Bittiği<br>Fetiş Listesi</div>
  <p class="home-text">
   Hazır mısın Öyküşüm? 👀<br>
   Birbirinden zor seçimler seni bekliyor.
   Bakalım sonunda kim kazanacak?
  </p>
-
  <button type="button" class="start-button" onclick="startGame()">
   💗 OYUNA BAŞLA 💗
  </button>
-
- <p class="subtitle">8 aday • 1 büyük şampiyon</p>
+ <p class="subtitle">32 aday • 1 büyük şampiyon</p>
 </div>
 
-<!-- OYUN -->
-
 <div id="game">
+ <h1>💗 Öykü'nün Eriyip Bittiği<br>Fetiş Listesi 💗</h1>
+ <p class="subtitle">En çok yükseldiğin kim? 👀</p>
 
- <h1>
-  💗 Öykü'nün Eriyip Bittiği<br>
-  Fetiş Listesi 💗
- </h1>
+ <div class="counter" id="counter">SEÇİMİNİ YAP!</div>
+ <div class="progress"><div id="bar"></div></div>
 
- <p class="subtitle">
-  En çok yükseldiğin kim? 👀
- </p>
-
- <div class="counter" id="counter">
-  SEÇİMİNİ YAP!
- </div>
-
- <div class="progress">
-  <div id="bar"></div>
- </div>
-
- <!-- ATEŞ ÖLÇER -->
  <div class="heat-container">
   <div class="heat-heading">
    <span>🔥 ATEŞ ÖLÇER</span>
    <span id="heatPercent">%0</span>
   </div>
-  <div class="heat-track">
-   <div id="heatBar"></div>
-  </div>
+  <div class="heat-track"><div id="heatBar"></div></div>
   <div id="heatMessage">🔥 Daha yeni başlıyoruz...</div>
  </div>
 
  <div class="players" id="players"></div>
-
  <div class="vs" id="vs">— VS —</div>
-
  <div id="result"></div>
 
- <button type="button" onclick="restart()">
-  ↻ Yeniden Başlat
- </button>
-
+ <button type="button" onclick="restart()">↻ Yeniden Başlat</button>
 </div>
 
 <div class="footer">Made by Doruk for Sapık Öyküş</div>
-
-<!-- POP-UP -->
 
 <div id="surprisePopup">
  <div class="popup-box">
@@ -485,35 +207,23 @@ button{
 /* ŞİFRE KONTROLÜ */
 
 function checkPassword(){
-
- const answer = document
-  .getElementById("passwordAnswer")
-  .value
-  .trim()
-  .toLocaleLowerCase("tr-TR");
+ const answer = document.getElementById("passwordAnswer")
+  .value.trim().toLocaleLowerCase("tr-TR");
 
  if(answer === "ayak"){
-
   document.getElementById("passwordScreen").style.display = "none";
   document.getElementById("home").style.display = "block";
-
  }else{
-
   document.getElementById("passwordError").innerText =
    "❌ Yanlış cevap! Tekrar dene.";
-
  }
 }
 
-/* ENTER TUŞUYLA CEVAPLAMA */
-
 document.getElementById("passwordAnswer").addEventListener("keydown",function(event){
-
- if(event.key === "Enter"){
-  checkPassword();
- }
-
+ if(event.key === "Enter") checkPassword();
 });
+
+/* 32 OYUNCU */
 
 const people = [
  {name:"Dušan Vlahović",image:"dusan.JPG"},
@@ -523,25 +233,40 @@ const people = [
  {name:"Patrick Jane",image:"patrick.JPG"},
  {name:"Dexter Morgan",image:"dexter.JPG"},
  {name:"Matheo Arntzen",image:"matheo.JPG"},
- {name:"Lukas Bergvall",image:"bergvall.JPG"}
+ {name:"Lukas Bergvall",image:"bergvall.JPG"},
+
+ ...Array.from({length:24},(_,i)=>({
+  name:"Demo Oyuncu " + String(i+1).padStart(2,"0"),
+  image:"https://placehold.co/400x500/35172f/ffffff?text=Demo+"+(i+1)
+ }))
 ];
 
 let remaining = [];
 let current = [];
+let roundWinners = [];
 let selectedCount = 0;
+let roundIndex = 0;
 let locked = false;
 
-/* ATEŞ ÖLÇER KONTROLÜ */
+/* TUR İSİMLERİ */
+
+const roundNames = [
+ "İLK TUR",
+ "SON 16",
+ "ÇEYREK FİNAL",
+ "YARI FİNAL",
+ "FİNAL"
+];
+
+/* ATEŞ ÖLÇER */
 
 function updateHeat(value){
-
  const heatBar = document.getElementById("heatBar");
  const heatPercent = document.getElementById("heatPercent");
  const heatMessage = document.getElementById("heatMessage");
 
  heatBar.style.width = value + "%";
  heatPercent.innerText = "%" + value;
-
  heatBar.classList.toggle("hot",value >= 70);
 
  if(value < 30){
@@ -555,28 +280,22 @@ function updateHeat(value){
  }
 }
 
-/* POP-UP KONTROLÜ */
+/* POP-UP */
 
 let popupShown = false;
 let popupTimer = null;
 
 function schedulePopup(){
-
  if(popupShown) return;
 
  popupTimer = setTimeout(function(){
-
   if(popupShown) return;
-
   popupShown = true;
-
   document.getElementById("surprisePopup").style.display = "flex";
-
- }, 5000 + Math.random() * 12000);
+ },5000 + Math.random() * 12000);
 }
 
 function closePopup(){
-
  document.getElementById("surprisePopup").style.display = "none";
 }
 
@@ -585,17 +304,18 @@ function startGame(){
  document.getElementById("game").style.display = "block";
  restart();
 
- if(!popupShown && !popupTimer){
-  schedulePopup();
- }
+ if(!popupShown && !popupTimer) schedulePopup();
 }
 
-function restart(){
+/* YENİDEN BAŞLAT */
 
+function restart(){
  locked = false;
  remaining = [...people];
  current = [];
+ roundWinners = [];
  selectedCount = 0;
+ roundIndex = 0;
 
  updateHeat(0);
 
@@ -606,47 +326,56 @@ function restart(){
  nextRound();
 }
 
+/* SONRAKİ MAÇ / TUR */
+
 function nextRound(){
 
- if(remaining.length === 1){
+ if(remaining.length === 0){
 
-  document.getElementById("players").innerHTML = "";
-  document.getElementById("vs").style.display = "none";
+  if(roundWinners.length === 1){
+   const champion = roundWinners[0];
 
-  document.getElementById("counter").innerText =
-   "🏆 BÜYÜK ŞAMPİYON 🏆";
+   document.getElementById("players").innerHTML = "";
+   document.getElementById("vs").style.display = "none";
+   document.getElementById("counter").innerText = "🏆 BÜYÜK ŞAMPİYON 🏆";
+   document.getElementById("bar").style.width = "100%";
 
-  document.getElementById("bar").style.width = "100%";
+   updateHeat(100);
 
-  updateHeat(100);
+   document.getElementById("result").innerHTML =
+    "<div class='champion'>👑 " +
+    champion.name +
+    " 👑</div><br>💗 Turnuvanın kazananı!";
 
-  document.getElementById("result").innerHTML =
-   "<div class='champion'>👑 " +
-   remaining[0].name +
-   " 👑</div><br>💗 Öykü'nün aşkı belli oldu!";
+   return;
+  }
 
-  return;
+  remaining = [...roundWinners];
+  roundWinners = [];
+  roundIndex++;
  }
 
  current = remaining.splice(0,2);
 
  document.getElementById("counter").innerText =
-  "SEÇİM " + (selectedCount + 1) +
+  roundNames[roundIndex] +
+  " • MAÇ " +
+  (roundWinners.length + 1) +
   " • KİMİ SEÇİYORSUN?";
 
  document.getElementById("bar").style.width =
-  (selectedCount / 7 * 100) + "%";
+  (selectedCount / 31 * 100) + "%";
 
  showPlayers();
 }
 
-function showPlayers(){
+/* OYUNCULARI GÖSTER */
 
+function showPlayers(){
  const area = document.getElementById("players");
  area.innerHTML = "";
 
  current.forEach((person,index)=>{
-
   const card = document.createElement("div");
   card.className = "player";
 
@@ -656,8 +385,7 @@ function showPlayers(){
 
   img.onerror = function(){
    this.onerror = null;
-   this.src =
-    "https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
+   this.src = "https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
   };
 
   const name = document.createElement("h2");
@@ -666,17 +394,14 @@ function showPlayers(){
   card.appendChild(img);
   card.appendChild(name);
 
-  card.onclick = function(){
-   choose(index);
-  };
-
+  card.onclick = function(){choose(index);};
   area.appendChild(card);
-
  });
 }
 
-function choose(index){
+/* KAZANANI SEÇ */
 
+function choose(index){
  if(locked) return;
 
  locked = true;
@@ -689,18 +414,15 @@ function choose(index){
 
  selectedCount++;
 
- updateHeat(Math.min(100,Math.round(selectedCount / 7 * 100)));
+ updateHeat(Math.min(100,Math.round(selectedCount / 31 * 100)));
 
  setTimeout(function(){
-
-  remaining.push(winner);
+  roundWinners.push(winner);
   locked = false;
   nextRound();
-
  },650);
 }
 
 </script>
-
 </body>
 </html>
