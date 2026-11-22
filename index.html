@@ -116,6 +116,58 @@ button{
 .popup-title{font-size:22px;font-weight:bold;color:#d52d87;margin:10px 0}
 .popup-message{font-size:17px;line-height:1.6}
 
+/* LİDYA MESAJ BİLDİRİMİ */
+
+#lidyaNotification{
+ display:none;
+ position:fixed;
+ top:15px;
+ left:50%;
+ transform:translateX(-50%);
+ width:calc(100% - 30px);
+ max-width:390px;
+ z-index:10000;
+ background:#202c33;
+ color:white;
+ border-radius:16px;
+ padding:14px;
+ text-align:left;
+ box-shadow:0 8px 30px #0008;
+ animation:lidyaEnter .45s ease;
+}
+
+.lidya-header{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ margin-bottom:9px;
+}
+
+.lidya-avatar{
+ width:38px;height:38px;
+ border-radius:50%;
+ background:#e94c9c;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:21px;
+}
+
+.lidya-name{font-weight:bold;font-size:14px}
+.lidya-time{margin-left:auto;color:#b8c5cc;font-size:11px}
+.lidya-message{
+ background:#33434b;
+ padding:11px;
+ border-radius:10px;
+ font-size:14px;
+ line-height:1.5;
+}
+
+@keyframes lidyaEnter{
+ from{opacity:0;transform:translate(-50%,-30px)}
+ to{opacity:1;transform:translate(-50%,0)}
+}
+
 @keyframes popupEnter{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 @keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
 @keyframes vsPulse{0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}}
@@ -136,6 +188,21 @@ button{
 
 <body>
 
+<!-- LİDYA BİLDİRİMİ -->
+
+<div id="lidyaNotification">
+ <div class="lidya-header">
+  <div class="lidya-avatar">💗</div>
+  <div class="lidya-name">Lidya Pınar (Aşkım)</div>
+  <div class="lidya-time">şimdi</div>
+ </div>
+ <div class="lidya-message">
+  Beni kalbine koyduğun için bu oyunda yokum hayatım ❤️
+ </div>
+</div>
+
+<!-- ŞİFRE EKRANI -->
+
 <div id="passwordScreen">
  <div class="heart">🔒</div>
  <div class="home-title">Özel Teste Giriş</div>
@@ -152,6 +219,8 @@ button{
  <p id="passwordError" class="password-error"></p>
 </div>
 
+<!-- AÇILIŞ -->
+
 <div id="home">
  <div class="heart">💗</div>
  <div class="home-title">Öykü'nün Eriyip Bittiği<br>Fetiş Listesi</div>
@@ -165,6 +234,8 @@ button{
  </button>
  <p class="subtitle">32 aday • 1 büyük şampiyon</p>
 </div>
+
+<!-- OYUN -->
 
 <div id="game">
  <h1>💗 Öykü'nün Eriyip Bittiği<br>Fetiş Listesi 💗</h1>
@@ -190,6 +261,8 @@ button{
 </div>
 
 <div class="footer">Made by Doruk for Sapık Öyküş</div>
+
+<!-- SÜRPRİZ POP-UP -->
 
 <div id="surprisePopup">
  <div class="popup-box">
@@ -247,6 +320,7 @@ let roundWinners = [];
 let selectedCount = 0;
 let roundIndex = 0;
 let locked = false;
+let lidyaShown = false;
 
 /* TUR İSİMLERİ */
 
@@ -280,7 +354,22 @@ function updateHeat(value){
  }
 }
 
-/* POP-UP */
+/* LİDYA MESAJI */
+
+function showLidyaMessage(){
+ if(lidyaShown) return;
+
+ lidyaShown = true;
+
+ const notification = document.getElementById("lidyaNotification");
+ notification.style.display = "block";
+
+ setTimeout(function(){
+  notification.style.display = "none";
+ },5000);
+}
+
+/* SÜRPRİZ POP-UP */
 
 let popupShown = false;
 let popupTimer = null;
@@ -316,6 +405,9 @@ function restart(){
  roundWinners = [];
  selectedCount = 0;
  roundIndex = 0;
+ lidyaShown = false;
+
+ document.getElementById("lidyaNotification").style.display = "none";
 
  updateHeat(0);
 
@@ -367,6 +459,11 @@ function nextRound(){
   (selectedCount / 31 * 100) + "%";
 
  showPlayers();
+
+ // ÇEYREK FİNAL BAŞLANGICINDA LİDYA MESAJI
+ if(roundIndex === 2 && !lidyaShown){
+  showLidyaMessage();
+ }
 }
 
 /* OYUNCULARI GÖSTER */
