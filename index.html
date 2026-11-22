@@ -98,8 +98,6 @@ button{
 .champion{animation:champion 1s ease infinite alternate}
 .footer{color:#a98ba0;font-size:12px;margin-top:35px}
 
-/* SÜRPRİZ POP-UP */
-
 #surprisePopup{
  display:none;position:fixed;inset:0;z-index:9999;
  background:rgba(0,0,0,.82);align-items:center;
@@ -118,101 +116,12 @@ button{
 .popup-title{font-size:22px;font-weight:bold;color:#d52d87;margin:10px 0}
 .popup-message{font-size:17px;line-height:1.6}
 
-/* LİDYA BİLDİRİMİ */
-
-#lidyaNotification{
- display:none;
- position:fixed;
- top:15px;
- left:50%;
- width:calc(100% - 30px);
- max-width:390px;
- z-index:10000;
- background:#202c33;
- color:white;
- border-radius:16px;
- padding:14px;
- text-align:left;
- box-shadow:0 8px 30px #0008;
- opacity:0;
- transform:translate(-50%,-100px);
- touch-action:none;
- user-select:none;
- -webkit-user-select:none;
- cursor:grab;
- will-change:transform,opacity;
-}
-
-#lidyaNotification:active{cursor:grabbing}
-
-#lidyaNotification.lidya-visible{
- display:block;
- animation:lidyaEnter .55s cubic-bezier(.2,.8,.2,1) forwards;
-}
-
-.lidya-header{
- display:flex;
- align-items:center;
- gap:10px;
- margin-bottom:9px;
-}
-
-.lidya-avatar{
- width:38px;height:38px;
- border-radius:50%;
- background:#e94c9c;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:21px;
- flex-shrink:0;
-}
-
-.lidya-name{font-weight:bold;font-size:14px}
-.lidya-time{margin-left:auto;color:#b8c5cc;font-size:11px}
-
-.lidya-message{
- background:#33434b;
- padding:11px;
- border-radius:10px;
- font-size:14px;
- line-height:1.5;
-}
-
-@keyframes lidyaEnter{
- from{opacity:0;transform:translate(-50%,-100px)}
- to{opacity:1;transform:translate(-50%,0)}
-}
-
-@keyframes popupEnter{
- from{opacity:0;transform:scale(.7)}
- to{opacity:1;transform:scale(1)}
-}
-
-@keyframes heartbeat{
- 0%,100%{transform:scale(1)}
- 50%{transform:scale(1.13)}
-}
-
-@keyframes vsPulse{
- 0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}
- 50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}
-}
-
-@keyframes cardEnter{
- from{opacity:0;transform:translateY(18px)}
- to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes champion{
- from{transform:scale(1)}
- to{transform:scale(1.08)}
-}
-
-@keyframes heatPulse{
- from{filter:brightness(1);box-shadow:0 0 8px #ff922e}
- to{filter:brightness(1.5);box-shadow:0 0 22px #ff3030}
-}
+@keyframes popupEnter{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
+@keyframes vsPulse{0%,100%{transform:scale(1);text-shadow:0 0 5px #ff8bc9}50%{transform:scale(1.15);text-shadow:0 0 22px #ff8bc9}}
+@keyframes cardEnter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes champion{from{transform:scale(1)}to{transform:scale(1.08)}}
+@keyframes heatPulse{from{filter:brightness(1);box-shadow:0 0 8px #ff922e}to{filter:brightness(1.5);box-shadow:0 0 22px #ff3030}}
 
 @media(max-width:450px){
  .player img{height:190px}
@@ -227,17 +136,6 @@ button{
 
 <body>
 
-<div id="lidyaNotification">
- <div class="lidya-header">
-  <div class="lidya-avatar">💗</div>
-  <div class="lidya-name">Lidya Pınar (Aşkım)</div>
-  <div class="lidya-time">şimdi</div>
- </div>
- <div class="lidya-message">
-  Beni kalbine koyduğun için bu oyunda yokum hayatım ❤️
- </div>
-</div>
-
 <div id="passwordScreen">
  <div class="heart">🔒</div>
  <div class="home-title">Özel Teste Giriş</div>
@@ -246,8 +144,8 @@ button{
   küçük bir soruyu doğru cevaplamalısın.
  </p>
  <h3>Doruk'un fetişi nedir?</h3>
- <input id="passwordAnswer" class="password-input"
-  type="text" placeholder="Cevabını yaz..." autocomplete="off">
+ <input id="passwordAnswer" class="password-input" type="text"
+  placeholder="Cevabını yaz..." autocomplete="off">
  <button type="button" class="start-button" onclick="checkPassword()">
   🔓 CEVABI GÖNDER
  </button>
@@ -287,10 +185,11 @@ button{
  <div class="players" id="players"></div>
  <div class="vs" id="vs">— VS —</div>
  <div id="result"></div>
+
  <button type="button" onclick="restart()">↻ Yeniden Başlat</button>
 </div>
 
-<div class="footer">Made by Doruk for Öykü</div>
+<div class="footer">Made by Doruk for Sapık Öyküş</div>
 
 <div id="surprisePopup">
  <div class="popup-box">
@@ -305,27 +204,28 @@ button{
 
 <script>
 
-/* ŞİFRE */
+/* ŞİFRE KONTROLÜ */
 
 function checkPassword(){
- const answer=document.getElementById("passwordAnswer")
+ const answer = document.getElementById("passwordAnswer")
   .value.trim().toLocaleLowerCase("tr-TR");
 
- if(answer==="ayak"){
-  document.getElementById("passwordScreen").style.display="none";
-  document.getElementById("home").style.display="block";
+ if(answer === "ayak"){
+  document.getElementById("passwordScreen").style.display = "none";
+  document.getElementById("home").style.display = "block";
  }else{
-  document.getElementById("passwordError").innerText="❌ Yanlış cevap! Tekrar dene.";
+  document.getElementById("passwordError").innerText =
+   "❌ Yanlış cevap! Tekrar dene.";
  }
 }
 
-document.getElementById("passwordAnswer").addEventListener("keydown",function(e){
- if(e.key==="Enter") checkPassword();
+document.getElementById("passwordAnswer").addEventListener("keydown",function(event){
+ if(event.key === "Enter") checkPassword();
 });
 
-/* OYUNCULAR */
+/* 32 OYUNCU */
 
-const people=[
+const people = [
  {name:"Dušan Vlahović",image:"dusan.JPG"},
  {name:"Alex Nübel",image:"nubel.JPG"},
  {name:"Samuel Eto'o",image:"eto.JPG"},
@@ -334,315 +234,191 @@ const people=[
  {name:"Dexter Morgan",image:"dexter.JPG"},
  {name:"Matheo Arntzen",image:"matheo.JPG"},
  {name:"Lukas Bergvall",image:"bergvall.JPG"},
+
  ...Array.from({length:24},(_,i)=>({
-  name:"Demo Oyuncu "+String(i+1).padStart(2,"0"),
+  name:"Demo Oyuncu " + String(i+1).padStart(2,"0"),
   image:"https://placehold.co/400x500/35172f/ffffff?text=Demo+"+(i+1)
  }))
 ];
 
-let remaining=[];
-let current=[];
-let roundWinners=[];
-let selectedCount=0;
-let roundIndex=0;
-let locked=false;
+let remaining = [];
+let current = [];
+let roundWinners = [];
+let selectedCount = 0;
+let roundIndex = 0;
+let locked = false;
+
+/* TUR İSİMLERİ */
+
+const roundNames = [
+ "İLK TUR",
+ "SON 16",
+ "ÇEYREK FİNAL",
+ "YARI FİNAL",
+ "FİNAL"
+];
 
 /* ATEŞ ÖLÇER */
 
 function updateHeat(value){
- const heatBar=document.getElementById("heatBar");
- heatBar.style.width=value+"%";
- document.getElementById("heatPercent").innerText="%"+value;
- heatBar.classList.toggle("hot",value>=70);
+ const heatBar = document.getElementById("heatBar");
+ const heatPercent = document.getElementById("heatPercent");
+ const heatMessage = document.getElementById("heatMessage");
 
- let message="🔥 Daha yeni başlıyoruz...";
- if(value>=30) message="🌡️ Ortam ısınmaya başladı!";
- if(value>=60) message="🔥🔥 Alevler yükseliyor!";
- if(value>=100) message="🔥🔥🔥 ORTALIK YANIYOR!";
+ heatBar.style.width = value + "%";
+ heatPercent.innerText = "%" + value;
+ heatBar.classList.toggle("hot",value >= 70);
 
- document.getElementById("heatMessage").innerText=message;
-}
-
-/* LİDYA BİLDİRİMİ */
-
-let lidyaShown=false;
-let lidyaAutoTimer=null;
-let lidyaClosing=false;
-
-let pointerActive=false;
-let pointerStartX=0;
-let pointerStartY=0;
-let pointerMoveX=0;
-let pointerMoveY=0;
-
-const lidyaNotification=document.getElementById("lidyaNotification");
-
-function showLidyaMessage(){
- if(lidyaShown) return;
-
- lidyaShown=true;
- lidyaClosing=false;
- pointerActive=false;
-
- lidyaNotification.style.display="block";
- lidyaNotification.style.transition="none";
- lidyaNotification.style.transform="translate(-50%,-100px)";
- lidyaNotification.style.opacity="0";
-
- void lidyaNotification.offsetWidth;
-
- lidyaNotification.classList.add("lidya-visible");
-
- clearTimeout(lidyaAutoTimer);
- lidyaAutoTimer=setTimeout(function(){
-  closeLidyaMessage("up");
- },6000);
-}
-
-function closeLidyaMessage(direction){
- if(lidyaClosing || lidyaNotification.style.display==="none") return;
-
- lidyaClosing=true;
- pointerActive=false;
- clearTimeout(lidyaAutoTimer);
-
- const width=window.innerWidth+lidyaNotification.offsetWidth;
- let x=0;
- let y=0;
-
- if(direction==="left") x=-width;
- if(direction==="right") x=width;
- if(direction==="up") y=-200;
-
- lidyaNotification.classList.remove("lidya-visible");
-
- lidyaNotification.style.transition=
-  "transform .35s cubic-bezier(.4,0,1,1), opacity .35s ease";
-
- lidyaNotification.style.transform=
-  `translate(calc(-50% + ${x}px), ${y}px)`;
-
- lidyaNotification.style.opacity="0";
-
- setTimeout(function(){
-  lidyaNotification.style.display="none";
-  lidyaNotification.style.transform="";
-  lidyaNotification.style.opacity="";
-  lidyaNotification.style.transition="";
-  lidyaClosing=false;
- },350);
-}
-
-/* IPHONE VE DİĞER CİHAZLAR İÇİN KAYDIRMA */
-
-lidyaNotification.addEventListener("pointerdown",function(e){
- if(lidyaClosing) return;
-
- pointerActive=true;
- pointerStartX=e.clientX;
- pointerStartY=e.clientY;
- pointerMoveX=0;
- pointerMoveY=0;
-
- clearTimeout(lidyaAutoTimer);
-
- lidyaNotification.style.transition="none";
-
- try{
-  lidyaNotification.setPointerCapture(e.pointerId);
- }catch(err){}
-});
-
-lidyaNotification.addEventListener("pointermove",function(e){
- if(!pointerActive || lidyaClosing) return;
-
- pointerMoveX=e.clientX-pointerStartX;
- pointerMoveY=e.clientY-pointerStartY;
-
- lidyaNotification.style.transform=
-  `translate(calc(-50% + ${pointerMoveX}px), ${pointerMoveY}px)`;
-
- const distance=Math.sqrt(
-  pointerMoveX*pointerMoveX+pointerMoveY*pointerMoveY
- );
-
- lidyaNotification.style.opacity=Math.max(.2,1-distance/350);
-});
-
-function finishLidyaSwipe(){
- if(!pointerActive || lidyaClosing) return;
-
- pointerActive=false;
-
- const horizontal=Math.abs(pointerMoveX);
- const vertical=Math.abs(pointerMoveY);
-
- if(horizontal>80 && horizontal>vertical){
-  closeLidyaMessage(pointerMoveX>0?"right":"left");
- }
- else if(pointerMoveY < -65 && vertical>horizontal){
-  closeLidyaMessage("up");
- }
- else{
-  lidyaNotification.style.transition=
-   "transform .3s cubic-bezier(.2,.8,.2,1), opacity .3s ease";
-
-  lidyaNotification.style.transform="translate(-50%,0)";
-  lidyaNotification.style.opacity="1";
-
-  lidyaAutoTimer=setTimeout(function(){
-   closeLidyaMessage("up");
-  },6000);
+ if(value < 30){
+  heatMessage.innerText = "🔥 Daha yeni başlıyoruz...";
+ }else if(value < 60){
+  heatMessage.innerText = "🌡️ Ortam ısınmaya başladı!";
+ }else if(value < 100){
+  heatMessage.innerText = "🔥🔥 Alevler yükseliyor!";
+ }else{
+  heatMessage.innerText = "🔥🔥🔥 ORTALIK YANIYOR!";
  }
 }
 
-lidyaNotification.addEventListener("pointerup",finishLidyaSwipe);
-lidyaNotification.addEventListener("pointercancel",finishLidyaSwipe);
+/* POP-UP */
 
-/* SÜRPRİZ POP-UP */
-
-let popupShown=false;
-let popupTimer=null;
+let popupShown = false;
+let popupTimer = null;
 
 function schedulePopup(){
- if(popupShown || popupTimer) return;
+ if(popupShown) return;
 
- popupTimer=setTimeout(function(){
-  popupShown=true;
-  popupTimer=null;
-  document.getElementById("surprisePopup").style.display="flex";
- },5000+Math.random()*12000);
+ popupTimer = setTimeout(function(){
+  if(popupShown) return;
+  popupShown = true;
+  document.getElementById("surprisePopup").style.display = "flex";
+ },5000 + Math.random() * 12000);
 }
 
 function closePopup(){
- document.getElementById("surprisePopup").style.display="none";
+ document.getElementById("surprisePopup").style.display = "none";
 }
 
-/* OYUNU BAŞLAT */
-
 function startGame(){
- document.getElementById("home").style.display="none";
- document.getElementById("game").style.display="block";
+ document.getElementById("home").style.display = "none";
+ document.getElementById("game").style.display = "block";
  restart();
- schedulePopup();
+
+ if(!popupShown && !popupTimer) schedulePopup();
 }
 
 /* YENİDEN BAŞLAT */
 
 function restart(){
- locked=false;
- remaining=[...people];
- current=[];
- roundWinners=[];
- selectedCount=0;
- roundIndex=0;
- lidyaShown=false;
- lidyaClosing=false;
- pointerActive=false;
-
- clearTimeout(lidyaAutoTimer);
-
- lidyaNotification.style.display="none";
- lidyaNotification.classList.remove("lidya-visible");
- lidyaNotification.style.transform="";
- lidyaNotification.style.opacity="";
- lidyaNotification.style.transition="";
+ locked = false;
+ remaining = [...people];
+ current = [];
+ roundWinners = [];
+ selectedCount = 0;
+ roundIndex = 0;
 
  updateHeat(0);
- document.getElementById("result").innerHTML="";
- document.getElementById("vs").style.display="block";
- document.getElementById("bar").style.width="0%";
+
+ document.getElementById("result").innerHTML = "";
+ document.getElementById("vs").style.display = "block";
+ document.getElementById("bar").style.width = "0%";
 
  nextRound();
 }
 
-/* TUR */
+/* SONRAKİ MAÇ / TUR */
 
 function nextRound(){
- if(remaining.length===0){
-  if(roundWinners.length===1){
-   const champion=roundWinners[0];
 
-   document.getElementById("players").innerHTML="";
-   document.getElementById("vs").style.display="none";
-   document.getElementById("counter").innerText="🏆 BÜYÜK ŞAMPİYON 🏆";
-   document.getElementById("bar").style.width="100%";
+ if(remaining.length === 0){
+
+  if(roundWinners.length === 1){
+   const champion = roundWinners[0];
+
+   document.getElementById("players").innerHTML = "";
+   document.getElementById("vs").style.display = "none";
+   document.getElementById("counter").innerText = "🏆 BÜYÜK ŞAMPİYON 🏆";
+   document.getElementById("bar").style.width = "100%";
+
    updateHeat(100);
 
-   document.getElementById("result").innerHTML=
-    "<div class='champion'>👑 "+champion.name+" 👑</div><br>💗 Turnuvanın kazananı!";
+   document.getElementById("result").innerHTML =
+    "<div class='champion'>👑 " +
+    champion.name +
+    " 👑</div><br>💗 Turnuvanın kazananı!";
+
    return;
   }
 
-  remaining=[...roundWinners];
-  roundWinners=[];
+  remaining = [...roundWinners];
+  roundWinners = [];
   roundIndex++;
  }
 
- current=remaining.splice(0,2);
+ current = remaining.splice(0,2);
 
- document.getElementById("counter").innerText=
-  roundNames[roundIndex]+" • MAÇ "+(roundWinners.length+1)+" • KİMİ SEÇİYORSUN?";
+ document.getElementById("counter").innerText =
+  roundNames[roundIndex] +
+  " • MAÇ " +
+  (roundWinners.length + 1) +
+  " • KİMİ SEÇİYORSUN?";
 
- document.getElementById("bar").style.width=(selectedCount/31*100)+"%";
+ document.getElementById("bar").style.width =
+  (selectedCount / 31 * 100) + "%";
 
  showPlayers();
-
- if(roundIndex===2 && !lidyaShown){
-  showLidyaMessage();
- }
 }
 
 /* OYUNCULARI GÖSTER */
 
 function showPlayers(){
- const area=document.getElementById("players");
- area.innerHTML="";
+ const area = document.getElementById("players");
+ area.innerHTML = "";
 
  current.forEach((person,index)=>{
-  const card=document.createElement("div");
-  card.className="player";
+  const card = document.createElement("div");
+  card.className = "player";
 
-  const img=document.createElement("img");
-  img.src=person.image;
-  img.alt=person.name;
+  const img = document.createElement("img");
+  img.src = person.image;
+  img.alt = person.name;
 
-  img.onerror=function(){
-   this.onerror=null;
-   this.src="https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
+  img.onerror = function(){
+   this.onerror = null;
+   this.src = "https://placehold.co/400x500/35172f/ffffff?text=Foto+Yok";
   };
 
-  const name=document.createElement("h2");
-  name.innerText=person.name;
+  const name = document.createElement("h2");
+  name.innerText = person.name;
 
   card.appendChild(img);
   card.appendChild(name);
-  card.onclick=function(){choose(index);};
 
+  card.onclick = function(){choose(index);};
   area.appendChild(card);
  });
 }
 
-/* SEÇİM */
+/* KAZANANI SEÇ */
 
 function choose(index){
  if(locked) return;
 
- locked=true;
+ locked = true;
 
- const cards=document.querySelectorAll(".player");
- const winner=current[index];
-
- selectedCount++;
+ const cards = document.querySelectorAll(".player");
+ const winner = current[index];
 
  cards[index].classList.add("winner");
  cards[1-index].classList.add("loser");
 
- updateHeat(Math.min(100,Math.round(selectedCount/31*100)));
+ selectedCount++;
+
+ updateHeat(Math.min(100,Math.round(selectedCount / 31 * 100)));
 
  setTimeout(function(){
   roundWinners.push(winner);
-  locked=false;
+  locked = false;
   nextRound();
  },650);
 }
